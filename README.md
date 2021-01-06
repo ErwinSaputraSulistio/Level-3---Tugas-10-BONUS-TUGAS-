@@ -1,6 +1,6 @@
 # Level 3 - Tugas 10
 
-(NOTE : "untuk database-nya, saya menggunakan PostgreSQL dan telah saya export menjadi file 'arkademy.psql'. Mohon pertama kali agar import file 'arkademy.psql' dahulu, baru menjalankan project agar dapat berjalan dengan baik.)
+(NOTE : "untuk database-nya, saya menggunakan PostgreSQL dan telah saya export menjadi file 'arkademy.psql'. Mohon pertama kali agar import file 'arkademy.psql' dahulu, baru menjalankan project agar fungsi CRUD dapat berjalan dengan semestinya.)
 
 Berikut adalah lampiran gambar website CRUD yang telah saya buat :
 ![ss1](https://user-images.githubusercontent.com/77045083/103748297-7cf7c200-5036-11eb-9208-2d6e4a9a4816.png)
