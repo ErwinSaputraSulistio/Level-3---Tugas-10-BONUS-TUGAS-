@@ -1,0 +1,195 @@
+<html>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<head>
+	<title>Level 3 Tugas 10 - CRUD Database</title>
+</head>
+<body>
+{{#notUndefinedType deletePostSuccessMsg }}
+	<div class="alert alert-success">{{ deletePostSuccessMsg }}</div>
+{{/notUndefinedType}}
+
+{{#notUndefinedType deletePostErrorMsg }}
+	<div class="alert alert-danger">{{ deletePostErrorMsg }}</div>
+{{/notUndefinedType}}
+
+	<div class="container-fluid">
+		<div style="text-align:center;">
+			<h1>[Level 3 Tugas 10 - CRUD Database]</h1>
+			<button class="btn btn-form" onclick="showCreate()" style="background-color:#1E90FF; width:20%;">Entry Produk Baru</button>
+				<div class="row">
+					<div id="form-create" class="form-create">
+						<form action="/create" method="POST">
+							<label for="nama_produk">Nama Produk : </label><br>
+							<input type="text" id="nama_produk" name="nama_produk" placeholder="Apa nama produk baru?" required><br>
+							<label for="keterangan">Keterangan Produk : </label><br>
+							<input type="text" id="keterangan" name="keterangan" placeholder="Apa keterangan produk ini?" required><br>
+							<label for="harga">Harga Produk : </label><br>
+							<input type="number" id="harga" name ="harga" placeholder="Berapa harga produk baru ? " required><br>
+							<label for="jumlah">Jumlah Produk : </label><br>
+							<input type="number" id="jumlah" name ="jumlah" placeholder="Berapa banyak jumlah produk baru ? " required><br>
+							<button class="btn btn-submit" type="submit" style="background-color:#1E90FF;">Buat</button>
+						</form>
+					</div>
+					<div id="form-update" class="form-update">
+						<form action="/update" method="POST">
+							<input type="hidden" id="id_produk" name="id_produk" required><br>
+							<label for="nama_baru">Ubah Nama : </label><br>
+							<input type="text" id="nama_baru" name="nama_baru" placeholder="Ganti nama produk jadi apa?" required><br>
+							<label for="keterangan_baru">Ubah Keterangan : </label><br>
+							<input type="text" id="keterangan_baru" name="keterangan_baru" placeholder="Ganti keterangan produk jadi apa?" required><br>
+							<label for="harga_baru">Ubah Harga : </label><br>
+							<input type="number" id="harga_baru" name ="harga_baru" placeholder="Ganti harga produk jadi berapa?" required><br>
+							<label for="jumlah_baru">Ubah Jumlah : </label><br>
+							<input type="number" id="jumlah_baru" name ="jumlah_baru" placeholder="Ganti jumlah produk jadi berapa?" required><br>
+							<button class="btn btn-submit" type="submit" style="background-color:#3CB371">Ganti</button>
+						</form>
+					</div>
+				</div>
+		</div>
+		<table class="tabel" style="width:75%; text-align:center; margin:auto; margin-bottom:1%;">
+			<tr>
+				<td>ID Produk : </td>
+				<th>Nama Produk : </th>
+				<th>Keterangan : </th>
+				<th>Harga : </th>
+				<th>Jumlah : </th>
+				<th>[Edit / Delete]</th>
+			</tr>
+			{{#each all_produk}}
+			<tr>
+				<td>{{this.dataValues.id}}</td>
+				<td>{{this.dataValues.nama_produk}}</td>
+				<td>{{this.dataValues.keterangan}}</td>
+				<td>Rp.{{this.dataValues.harga}},00 -</td>
+				<td>{{this.dataValues.jumlah}} pcs</td>
+				<td>
+					<button class="btn btn-form" onclick="showUpdate(this)" style="background-color:#3CB371;">Ganti</button>
+					<form action="/delete" method="POST">
+						<input type="hidden" id='id_produk' name='id_produk' value={{this.dataValues.id}}></input>
+						<button id="hapus" name="hapus" onclick="hapus()" class="btn btn-hapus">Hapus</button>
+					</form>
+				</td>
+			</tr>
+			{{/each}}
+		</table>
+	</div>
+</body>
+<style>
+
+	form {
+		margin-top:5%;
+	}
+	input {
+		width:75%;
+		margin-bottom:1%;
+	}
+
+	.btn-form {
+      width:75%;
+		border-radius:10px;
+		margin-bottom:1%;
+		color:white;
+	}
+
+	.btn-form:hover {
+      color:white;
+		opacity:0.5;
+	}
+
+	.btn-submit {
+		border-radius:10px;
+		margin-top:3%;
+		width:50%;
+		color:white;
+	}
+
+	.btn-submit:hover {
+      color:white;
+		opacity:0.5;
+	}
+
+	.btn-hapus {
+      width:75%;
+		border-radius:10px;
+		text-decoration:none;
+		color:white;
+		background-color:#CD5C5C;
+	}
+
+	.btn-hapus:hover {
+      color:white;
+		opacity:0.5;
+	}
+
+	.form-create, .form-update {
+		border:3px dashed grey;
+		border-radius:25px;
+		width:20%;
+		height:400px;
+		margin:auto;
+		margin-bottom:1%;
+	}
+
+	.tabel, th, td {
+		border:1px solid black;
+		border-collapse:collapse;
+		padding:15px;
+	}
+
+	.bawah {
+		text-align:center;
+		margin-bottom:3%;
+	}
+
+</style>
+<script>
+	document.getElementById("form-create").style.display = "none";
+	var tc = document.getElementById("form-create");
+	var tu = document.getElementById("form-update");
+	
+	function showCreate() {
+		if (tc.style.display === "block") {
+			tc.style.display = "none";
+		}
+		else if (tc.style.display === "block" && tu.style.display === "none") {
+			tc.style.display = "none";
+			tu.style.display = "block";
+		}
+		else {
+			tc.style.display = "block";
+		}
+	}
+
+	document.getElementById("form-update").style.display = "none";
+
+	function showUpdate(event) {
+		var produkId = event.parentElement.parentElement.firstElementChild.textContent
+		 $.ajax({method: "GET",
+		 		 url: "/edit/" + produkId,
+    			 success: function(data) {
+					 setDatatoForm(data)
+    			 }}
+				);
+
+		if (tu.style.display === "block") {
+			tu.style.display = "none";
+		}
+		else if (tu.style.display === "block" && tc.style.display === "none") {
+			tu.style.display = "none";
+			tc.style.display = "block";
+		}
+		else {
+			tu.style.display = "block";
+		}
+	}
+
+	function setDatatoForm(data) {
+		$('#id_produk').val(data.produkData.id)
+		$('#nama_baru').val(data.produkData.nama_produk)
+		$('#keterangan_baru').val(data.produkData.keterangan)
+		$('#harga_baru').val(data.produkData.harga)
+		$('#jumlah_baru').val(data.produkData.jumlah)
+	}
+</script>
+</html>
